@@ -1,7 +1,17 @@
-use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, SubAssign};
+use std::{
+    fmt::Display,
+    ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, SubAssign},
+};
 
+#[derive(Clone)]
 pub struct Vec3 {
     pub elements: [f64; 3],
+}
+
+impl Display for Vec3 {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "[x:{}, y:{}, z:{}]", self.x(), self.y(), self.z())
+    }
 }
 
 // 运算符重载[]
@@ -59,6 +69,20 @@ impl SubAssign for Vec3 {
 }
 
 // 运算符重载 * *=
+/// Vec3 * f64
+impl Mul<f64> for Vec3 {
+    type Output = Vec3;
+    fn mul(self, rhs: f64) -> Self::Output {
+        Self {
+            elements: [
+                self.elements[0] * rhs,
+                self.elements[1] * rhs,
+                self.elements[2] * rhs,
+            ],
+        }
+    }
+}
+/// Vec3 * Vec3
 impl Mul for Vec3 {
     type Output = Vec3;
     fn mul(self, rhs: Self) -> Self::Output {
@@ -71,6 +95,7 @@ impl Mul for Vec3 {
         }
     }
 }
+/// Vec3 *= Vec3
 impl MulAssign for Vec3 {
     fn mul_assign(&mut self, rhs: Self) {
         self.elements[0] *= rhs.elements[0];
@@ -142,6 +167,6 @@ impl Vec3 {
         self.length_squared().sqrt()
     }
     pub fn unite_vector(v: Self) -> Self {
-        v / v.length()
+        v.clone() / v.length()
     }
 }
