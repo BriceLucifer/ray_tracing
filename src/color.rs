@@ -1,8 +1,8 @@
 use crate::vec3::Vec3;
 
-type Color = Vec3;
+pub type Color = Vec3;
 
-pub fn write_color(pixel_color: Color) {
+pub fn write_color(pixel_color: &Color) {
     let r = pixel_color.x();
     let g = pixel_color.y();
     let b = pixel_color.z();
@@ -11,5 +11,5 @@ pub fn write_color(pixel_color: Color) {
     let gbyte = (255.99 * g) as i32;
     let bbyte = (255.99 * b) as i32;
 
-    println!("{} {} {}", rbyte, gbyte, bbyte);
+    print!("{} {} {}\n", rbyte, gbyte, bbyte);
 }

@@ -69,6 +69,13 @@ impl SubAssign for Vec3 {
 }
 
 // 运算符重载 * *=
+/// f64 * Vec3
+impl Mul<Vec3> for f64 {
+    type Output = Vec3;
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        rhs * self
+    }
+}
 /// Vec3 * f64
 impl Mul<f64> for Vec3 {
     type Output = Vec3;
@@ -105,7 +112,7 @@ impl MulAssign for Vec3 {
 }
 
 // 运算符重载 / /=
-/// Vec3 - Vec3
+/// Vec3 / Vec3
 impl Div for Vec3 {
     type Output = Vec3;
     fn div(self, rhs: Self) -> Self::Output {
@@ -118,7 +125,7 @@ impl Div for Vec3 {
         }
     }
 }
-/// Vec3 - f64
+/// Vec3 / f64
 impl Div<f64> for Vec3 {
     type Output = Vec3;
     fn div(self, rhs: f64) -> Self::Output {
@@ -131,7 +138,7 @@ impl Div<f64> for Vec3 {
         }
     }
 }
-/// Vec3 -= Vec3
+/// Vec3 /= Vec3
 impl DivAssign for Vec3 {
     fn div_assign(&mut self, rhs: Self) {
         self.elements[0] /= rhs.elements[0];
@@ -168,5 +175,15 @@ impl Vec3 {
     }
     pub fn unite_vector(v: Self) -> Self {
         v.clone() / v.length()
+    }
+    pub fn dot(u: &Self, v: &Self) -> f64 {
+        u.x() * v.x() + u.y() * v.y() + u.z() * v.z()
+    }
+    pub fn cross(u: &Self, v: &Self) -> Self {
+        Self::new_with_value(
+            u.y() * v.z() - u.z() * v.y(),
+            u.z() * v.x() - u.x() * v.z(),
+            u.x() * v.y() - u.x() * v.y(),
+        )
     }
 }
