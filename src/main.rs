@@ -1,14 +1,14 @@
 use raytracing::{
-    color::{Color, write_color},
+    color::write_color,
     ray::{Point3, Ray},
     vec3::Vec3,
 };
 
 fn main() {
     let aspect_ratio = 16.0 / 9.0;
-    let image_width = 400.0 as i32;
+    let image_width = 400.0;
 
-    let image_height = (image_width as f64 / aspect_ratio) as i32;
+    let image_height = image_width / aspect_ratio;
 
     // View port
     let focal_length = 1.0;
@@ -31,22 +31,16 @@ fn main() {
 
     // Render
     print!("P3\n{} {}\n255\n", image_width, image_height);
-    for j in 0..image_height {
-        eprintln!("\rScanlines remaining: {} ", image_height - j);
-        for i in 0..image_width {
+    for j in 0..image_height as i32 {
+        eprintln!("\rScanlines remaining: {} ", image_height as i32 - j);
+        for i in 0..image_width as i32 {
             let pixel_center = pixel00_loc.clone()
                 + (i as f64 * pixel_delta_u.clone())
                 + (j as f64 * pixel_delta_v.clone());
             let ray_direction = pixel_center - camera_center.clone();
             let r = Ray::new(camera_center.clone(), ray_direction.clone());
-            let pixel_color = ray_color(&r);
+            let pixel_color = Ray::ray_color(&r);
             write_color(&pixel_color);
         }
     }
-}
-
-fn ray_color(r: &Ray) -> Color {
-    let unit_direction = Vec3::unite_vector(r.direction());
-    let a = 0.5 * (unit_direction.y() - 1.0);
-    (1.0 - a) * Color::new_with_value(1.0, 1.0, 1.0) + a * Color::new_with_value(0.5, 0.7, 1.0)
 }
