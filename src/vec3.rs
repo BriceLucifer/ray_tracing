@@ -1,6 +1,6 @@
 use std::{
     fmt::Display,
-    ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, SubAssign},
+    ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub, SubAssign},
 };
 
 #[derive(Clone)]
@@ -60,6 +60,12 @@ impl AddAssign for Vec3 {
 }
 
 // 运算符重载 - -=
+impl Sub for Vec3 {
+    type Output = Vec3;
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self::new_with_value(self.x() - rhs.x(), self.y() - rhs.y(), self.z() - rhs.z())
+    }
+}
 impl SubAssign for Vec3 {
     fn sub_assign(&mut self, rhs: Self) {
         self.elements[0] -= rhs.elements[0];
