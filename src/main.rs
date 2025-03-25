@@ -1,6 +1,6 @@
 use raytracing::{
     color::write_color,
-    ray::{Point3, Ray},
+    ray::{Point3, Ray, ray_color},
     vec3::Vec3,
 };
 
@@ -39,7 +39,7 @@ fn main() {
                 + (j as f64 * pixel_delta_v.clone());
             let ray_direction = pixel_center - camera_center.clone();
             let r = Ray::new(camera_center.clone(), ray_direction.clone());
-            let pixel_color = Ray::ray_color(&r);
+            let pixel_color = ray_color(&r);
             write_color(&pixel_color);
         }
     }
