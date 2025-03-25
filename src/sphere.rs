@@ -42,7 +42,7 @@ impl HitTable for Sphere {
 }
 
 impl Sphere {
-    fn new(center: &Point3, radius: f64) -> Self {
+    pub fn new(center: &Point3, radius: f64) -> Self {
         Self {
             center: center.clone(),
             radius: fmax!(0.0, radius),

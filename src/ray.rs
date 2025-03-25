@@ -28,8 +28,8 @@ impl Ray {
 pub fn ray_color(r: &Ray) -> Color {
     let t = hit_sphere(&Point3::new_with_value(0.0, 0.0, -1.0), 0.5, r);
     if t > 0.0 {
-        let N = Vec3::unite_vector(r.at(t) - Vec3::new_with_value(0.0, 0.0, -1.0));
-        return 0.5 * Color::new_with_value(N.x() + 1.0, N.y() + 1.0, N.z() + 1.0);
+        let n = Vec3::unite_vector(r.at(t) - Vec3::new_with_value(0.0, 0.0, -1.0));
+        return 0.5 * Color::new_with_value(n.x() + 1.0, n.y() + 1.0, n.z() + 1.0);
     }
 
     let unit_direction = Vec3::unite_vector(r.direction());
