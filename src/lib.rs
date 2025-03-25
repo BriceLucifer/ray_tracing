@@ -11,3 +11,10 @@ macro_rules! dot {
         Vec3::dot($v1, $v2)
     };
 }
+
+#[macro_export]
+macro_rules! fmax {
+    ($a:expr, $b:expr) => {
+        if $a > $b { $a } else { $b }
+    };
+}
