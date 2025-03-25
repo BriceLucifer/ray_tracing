@@ -1,5 +1,3 @@
-use std::num;
-
 use crate::{color::Color, dot, vec3::Vec3};
 
 pub type Point3 = Vec3;
@@ -41,14 +39,13 @@ pub fn ray_color(r: &Ray) -> Color {
 
 pub fn hit_sphere(center: &Point3, radius: f64, r: &Ray) -> f64 {
     let oc = center.clone() - r.origin();
-    let a = dot!(&r.direction(), &r.direction());
-    let b = -2.0 * dot!(&r.direction(), &oc);
-    let c = dot!(&oc, &oc) - radius * radius;
-    let discriminant = b * b - 4.0 * a * c;
-
+    let a = r.direction().length_squared();
+    let h = dot!(&r.direction(), &oc);
+    let c = oc.length_squared() - radius * radius;
+    let discriminant = h * h - a * c;
     if discriminant < 0.0 {
         return -1.0;
     } else {
-        return -b - discriminant.sqrt() / (2.0 * a);
+        return h - discriminant.sqrt() / a;
     }
 }
