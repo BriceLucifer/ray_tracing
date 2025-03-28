@@ -35,8 +35,8 @@ impl HitTable for Sphere {
 
         rec.t = root;
         rec.p = r.at(rec.t);
-        rec.normal = (rec.p.clone() - self.center.clone()) / self.radius;
-
+        let outward_normal = (rec.p.clone() - self.center.clone()) / self.radius;
+        rec.set_face_normal(r, &outward_normal);
         return true;
     }
 }

@@ -43,6 +43,7 @@ pub fn hit_sphere(center: &Point3, radius: f64, r: &Ray) -> f64 {
     let h = dot!(&r.direction(), &oc);
     let c = oc.length_squared() - radius * radius;
     let discriminant = h * h - a * c;
+
     if discriminant < 0.0 {
         return -1.0;
     } else {
