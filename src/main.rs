@@ -58,4 +58,5 @@ fn main() {
             write_color(&pixel_color);
         }
     }
+    eprint!("\rDone.                 \n");
 }

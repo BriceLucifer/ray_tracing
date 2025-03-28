@@ -2,5 +2,5 @@
 
 1. 运行
 ```bash
-cargo run >> image.ppm
+cargo run > image.ppm
 ```
