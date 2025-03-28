@@ -1,5 +1,6 @@
 use crate::{dot, fmax, hittable::HitTable, ray::Point3, vec3::Vec3};
 
+#[derive(Clone)]
 pub struct Sphere {
     center: Point3,
     radius: f64,

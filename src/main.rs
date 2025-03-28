@@ -1,14 +1,29 @@
 use raytracing::{
     color::write_color,
+    hittable_list::HitTableList,
     ray::{Point3, Ray, ray_color},
+    sphere::Sphere,
     vec3::Vec3,
 };
 
 fn main() {
+    // Image
     let aspect_ratio = 16.0 / 9.0;
     let image_width = 400.0;
 
+    // calculate the image height
     let image_height = image_width / aspect_ratio;
+
+    // World
+    let mut world = HitTableList::new();
+    world.add(Some(Box::new(Sphere::new(
+        &Point3::new_with_value(0.0, 0.0, -1.0),
+        0.5,
+    ))));
+    world.add(Some(Box::new(Sphere::new(
+        &Point3::new_with_value(0.0, -100.5, -1.0),
+        100.0,
+    ))));
 
     // View port
     let focal_length = 1.0;
@@ -39,7 +54,7 @@ fn main() {
                 + (j as f64 * pixel_delta_v.clone());
             let ray_direction = pixel_center - camera_center.clone();
             let r = Ray::new(camera_center.clone(), ray_direction.clone());
-            let pixel_color = ray_color(&r);
+            let pixel_color = ray_color(&r, &Some(Box::new(&world)));
             write_color(&pixel_color);
         }
     }

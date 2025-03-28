@@ -1,4 +1,9 @@
-use crate::{color::Color, dot, vec3::Vec3};
+use crate::{
+    color::Color,
+    dot,
+    hittable::{HitRecord, HitTable},
+    vec3::Vec3,
+};
 
 pub type Point3 = Vec3;
 
@@ -25,11 +30,17 @@ impl Ray {
     }
 }
 
-pub fn ray_color(r: &Ray) -> Color {
-    let t = hit_sphere(&Point3::new_with_value(0.0, 0.0, -1.0), 0.5, r);
-    if t > 0.0 {
-        let n = Vec3::unite_vector(r.at(t) - Vec3::new_with_value(0.0, 0.0, -1.0));
-        return 0.5 * Color::new_with_value(n.x() + 1.0, n.y() + 1.0, n.z() + 1.0);
+pub fn ray_color(r: &Ray, world: &Option<Box<&dyn HitTable>>) -> Color {
+    // let t = hit_sphere(&Point3::new_with_value(0.0, 0.0, -1.0), 0.5, r);
+    // if t > 0.0 {
+    // let n = Vec3::unite_vector(r.at(t) - Vec3::new_with_value(0.0, 0.0, -1.0));
+    // return 0.5 * Color::new_with_value(n.x() + 1.0, n.y() + 1.0, n.z() + 1.0);
+    // }
+    let mut rec: HitRecord = HitRecord::new();
+    if let Some(item) = world {
+        if item.hit(r, 0.0, f64::INFINITY, &mut rec) {
+            return 0.5 * (rec.normal.clone() + Color::new_with_value(1.0, 1.0, 1.0));
+        }
     }
 
     let unit_direction = Vec3::unite_vector(r.direction());
