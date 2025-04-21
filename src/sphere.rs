@@ -1,4 +1,10 @@
-use crate::{dot, fmax, hittable::HitTable, ray::Point3, vec3::Vec3};
+use crate::{
+    dot, fmax,
+    hittable::{HitRecord, HitTable},
+    interval::Interval,
+    ray::{Point3, Ray},
+    vec3::Vec3,
+};
 
 #[derive(Clone)]
 pub struct Sphere {
@@ -7,13 +13,7 @@ pub struct Sphere {
 }
 
 impl HitTable for Sphere {
-    fn hit(
-        &self,
-        r: &crate::ray::Ray,
-        ray_tmin: f64,
-        ray_tmax: f64,
-        rec: &mut crate::hittable::HitRecord,
-    ) -> bool {
+    fn hit(&self, r: &Ray, ray_t: Interval, rec: &mut HitRecord) -> bool {
         let oc = self.center.clone() - r.origin();
         let a = r.direction().length_squared();
         let h = dot!(&r.direction(), &oc);
@@ -27,9 +27,9 @@ impl HitTable for Sphere {
         let sqrtd = discriminant.sqrt();
 
         let mut root = (h - sqrtd) / a;
-        if root <= ray_tmin || ray_tmax <= root {
+        if !ray_t.surrounds(root) {
             root = (h + sqrtd) / a;
-            if root <= ray_tmin || ray_tmax <= root {
+            if !ray_t.surrounds(root) {
                 return false;
             }
         }

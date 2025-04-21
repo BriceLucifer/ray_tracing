@@ -1,4 +1,6 @@
 use crate::hittable::{HitRecord, HitTable};
+use crate::interval::Interval;
+use crate::ray::Ray;
 
 pub struct HitTableList {
     pub objects: Vec<Option<Box<dyn HitTable>>>,
@@ -20,21 +22,15 @@ impl HitTableList {
 }
 
 impl HitTable for HitTableList {
-    fn hit(
-        &self,
-        r: &crate::ray::Ray,
-        ray_tmin: f64,
-        ray_tmax: f64,
-        rec: &mut crate::hittable::HitRecord,
-    ) -> bool {
+    fn hit(&self, r: &Ray, ray_t: Interval, rec: &mut HitRecord) -> bool {
         let mut temp_rec = HitRecord::new();
         let mut hit_anything = false;
-        let mut closet_so_far = ray_tmax;
+        let mut closet_so_far = ray_t.max;
 
         for object in &self.objects {
             match object {
                 Some(item) => {
-                    if item.hit(r, ray_tmin, closet_so_far, &mut temp_rec) {
+                    if item.hit(r, Interval::new(ray_t.min, closet_so_far), &mut temp_rec) {
                         hit_anything = true;
                         closet_so_far = temp_rec.clone().t;
                         *rec = temp_rec.clone();

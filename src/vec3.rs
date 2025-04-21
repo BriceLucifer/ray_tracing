@@ -179,7 +179,7 @@ impl Vec3 {
     pub fn length(&self) -> f64 {
         self.length_squared().sqrt()
     }
-    pub fn unite_vector(v: Self) -> Self {
+    pub fn unit_vector(v: Self) -> Self {
         v.clone() / v.length()
     }
     pub fn dot(u: &Self, v: &Self) -> f64 {

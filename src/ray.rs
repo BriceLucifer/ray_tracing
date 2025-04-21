@@ -2,6 +2,8 @@ use crate::{
     color::Color,
     dot,
     hittable::{HitRecord, HitTable},
+    interval::Interval,
+    rtweekend::INFINITY,
     vec3::Vec3,
 };
 
@@ -38,7 +40,7 @@ pub fn ray_color(r: &Ray, world: &Option<Box<&dyn HitTable>>) -> Color {
     // }
     let mut rec: HitRecord = HitRecord::new();
     if let Some(item) = world {
-        if item.hit(r, 0.0, f64::INFINITY, &mut rec) {
+        if item.hit(r, Interval::new(0.0, INFINITY), &mut rec) {
             return 0.5 * (rec.normal.clone() + Color::new_with_value(1.0, 1.0, 1.0));
         }
     }

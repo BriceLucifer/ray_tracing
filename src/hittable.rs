@@ -1,5 +1,6 @@
 use crate::{
     dot,
+    interval::Interval,
     ray::{Point3, Ray},
     vec3::Vec3,
 };
@@ -13,7 +14,7 @@ pub struct HitRecord {
 }
 
 pub trait HitTable {
-    fn hit(&self, r: &Ray, ray_tmin: f64, ray_tmax: f64, rec: &mut HitRecord) -> bool;
+    fn hit(&self, r: &Ray, ray_t: Interval, rec: &mut HitRecord) -> bool;
 }
 
 impl HitRecord {
